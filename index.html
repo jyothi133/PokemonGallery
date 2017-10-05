@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokemon Gallery</title>
+    <!-- Bootstrap css and my own css for header -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous">
+    <style>
+        .header img{height: 250px;}
+    </style>
+    <script src="js/lib/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="js/controllers/pokemonsData.js"></script>
+</head>
+<body ng-app="pokemonGallery">
+<div class="container">
+    <div class="header">
+        <img src="images/hero-background.jpg" width="100%">
+        <h1>Pokemon Gallery</h1>
+    </div>
+    <div ng-controller="pokemonController">
+        <form class="form-inline well well-sm clearfix">
+            <input type="text" class="form-control" ng-model="search">
+        </form>
+        <div class="row">
+            <div class="col-sm-3"
+                 ng-repeat="(key,value) in data.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | filter:search">
+                <div class="well well-sm">
+                    <img ng-src="images/{{value.url.split('/').slice(-2)[0]}}.png">
+                    <h3>{{value.url.split('/').slice(-2)[0] +'# '+value.name}}</h3>
+                </div>
+            </div>
+        </div>
+        <button class="btn" ng-disabled="currentPage == 1" ng-click="currentPage=currentPage-1">
+            Previous
+        </button>
+       <b> {{currentPage}} {{numberOfPages()}} </b>
+        <button class="btn" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">
+            Next
+        </button>
+    </div>
+</div>
+</body>
+</html>
+
